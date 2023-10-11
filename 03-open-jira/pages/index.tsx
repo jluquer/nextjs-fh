@@ -1,7 +1,10 @@
+import { Layout } from "@/components/layouts";
+import { Typography } from "@mui/material";
+
 export default function Home() {
   return (
-    <>
-      <h1>Hi</h1>
-    </>
+    <Layout>
+      <Typography variant="h1" color="primary">Hola mundo</Typography>
+    </Layout>
   );
 }
