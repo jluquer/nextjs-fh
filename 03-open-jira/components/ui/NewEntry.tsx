@@ -5,10 +5,11 @@ import SaveIcon from "@mui/icons-material/SaveOutlined";
 import AddIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 import { EntriesContext } from "@/context/entries";
+import { UIContext } from "@/context/ui";
 
 export const NewEntry = () => {
+  const { isAddingEntry, setIsAddingEntry } = useContext(UIContext);
   const { addNewEntry } = useContext(EntriesContext);
-  const [isAdding, setIsAdding] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [touched, setTouched] = useState(false);
 
@@ -22,17 +23,17 @@ export const NewEntry = () => {
     addNewEntry(inputValue);
     setInputValue("");
     setTouched(false);
-    setIsAdding(false);
+    setIsAddingEntry(false);
   };
 
   const onCancel = () => {
-    setIsAdding(false);
+    setIsAddingEntry(false);
     setTouched(false);
   };
 
   return (
     <Box sx={{ marginBottom: 2, paddingX: 1 }}>
-      {isAdding ? (
+      {isAddingEntry ? (
         <>
           <TextField
             fullWidth
@@ -62,7 +63,7 @@ export const NewEntry = () => {
           startIcon={<AddIcon />}
           fullWidth
           variant="outlined"
-          onClick={() => setIsAdding(true)}
+          onClick={() => setIsAddingEntry(true)}
         >
           Agregar tarea
         </Button>
