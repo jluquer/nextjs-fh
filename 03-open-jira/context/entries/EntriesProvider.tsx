@@ -10,27 +10,7 @@ export interface EntriesState {
 }
 
 const ENTRIES_INITIAL_STATE: EntriesState = {
-  entries: [
-    {
-      _id: uuidv4(),
-      description:
-        "pending - Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus vero accusantium, accusamus repudiandae reiciendis dolore consectetur debitis molestiae est voluptatibus nisi delectus quo ex fuga enim a possimus cumque corporis!",
-      status: "pending",
-      createdAt: Date.now(),
-    },
-    {
-      _id: uuidv4(),
-      description: "progress - descripcion 2",
-      status: "in-progress",
-      createdAt: Date.now() - 1000000,
-    },
-    {
-      _id: uuidv4(),
-      description: "done - descripcion 3",
-      status: "finished",
-      createdAt: Date.now() - 100000,
-    },
-  ],
+  entries: [],
 };
 
 interface Props {
@@ -55,6 +35,8 @@ export const EntriesProvider: FC<Props> = ({ children }) => {
   };
 
   return (
-    <EntriesContext.Provider value={{ ...state, addNewEntry, updateEntry }}>{children}</EntriesContext.Provider>
+    <EntriesContext.Provider value={{ ...state, addNewEntry, updateEntry }}>
+      {children}
+    </EntriesContext.Provider>
   );
 };
