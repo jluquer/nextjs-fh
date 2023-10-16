@@ -8,7 +8,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   switch (req.method) {
     case "GET":
       return getEntries(res);
-
     case "POST":
       return createEntry(req, res);
 
