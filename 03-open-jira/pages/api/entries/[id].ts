@@ -13,6 +13,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
   }
 
   switch (req.method) {
+    case "GET":
+      return getEntry(id, res);
     case "PUT":
       return updateEntry(req, res);
     case "DELETE":
@@ -49,4 +51,19 @@ async function updateEntry(req: NextApiRequest, res: NextApiResponse<Data>) {
 }
 function deleteEntry(req: NextApiRequest, res: NextApiResponse<Data>) {
   throw new Error("Function not implemented.");
+}
+async function getEntry(id: string | string[] | undefined, res: NextApiResponse<Data>) {
+  try {
+    await db.connect();
+    const entry = await Entry.findById(id);
+    await db.disconnect();
+
+    if (!entry)
+      return res.status(404).json({ message: `No se encontro la entrada con el id ${id}` });
+
+    res.status(200).json(entry);
+  } catch (error: any) {
+    await db.disconnect();
+    return res.status(400).json({ message: `bad request: ${error.errors.status.message}` });
+  }
 }
