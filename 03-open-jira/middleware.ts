@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 // This function can be marked `async` if using `await` inside
 export function middleware(req: NextRequest): NextResponse {
   const path = req.nextUrl.pathname;
-  if (path.startsWith("/api/entries")) {
+  if (path.startsWith("/api/entries/")) {
     const id = path.replace("/api/entries/", "");
     const checkMongoIDRegExp = /^[0-9a-fA-F]{24}$/;
 
