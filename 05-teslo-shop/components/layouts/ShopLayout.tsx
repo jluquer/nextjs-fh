@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { ReactNode } from "react";
+import { Navbar } from "../ui";
 
 interface Props {
   children: ReactNode;
@@ -18,7 +19,8 @@ export function ShopLayout({ children, title, pageDescription, imageFullUrl }: P
         <meta name="og:description" content={pageDescription} />
         {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
       </Head>
-      <nav></nav>
+
+      <Navbar />
 
       <main style={{ margin: "80px auto", maxWidth: "1440px", padding: "0px 30px" }}>
         {children}
