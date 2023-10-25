@@ -1,6 +1,6 @@
 import { Layout } from "@/components/layouts";
 import { EntryList, NewEntry } from "@/components/ui";
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Card, CardHeader, Grid } from "@mui/material";
 
 export default function Home() {
   return (
