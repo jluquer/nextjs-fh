@@ -1,5 +1,6 @@
 import { ShopLayout } from "@/components/layouts";
 import { ProductSlideShow } from "@/components/products";
+import { ItemCounter } from "@/components/ui";
 import { initialData } from "@/database/products";
 import { Box, Button, Chip, Grid, Typography } from "@mui/material";
 
@@ -24,13 +25,16 @@ function ProductPage() {
 
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
+              <ItemCounter />
             </Box>
 
-            <Button color="secondary" className="circular-btn">
-              Agregar al carrito
-            </Button>
-
-            {/* <Chip label="No disponible" color="error" variant="outlined" /> */}
+            {product.inStock ? (
+              <Button color="secondary" className="circular-btn">
+                Agregar al carrito
+              </Button>
+            ) : (
+              <Chip label="No disponible" color="error" variant="outlined" />
+            )}
 
             <Box sx={{ mt: 3 }}>
               <Typography variant="subtitle2">Descripción</Typography>
