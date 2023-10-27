@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
-import NextLink from "next/link";
-import { Box, Card, CardActionArea, CardMedia, Grid, Link, Typography } from "@mui/material";
+import { useMemo, useState } from 'react';
+import NextLink from 'next/link';
+import { Box, Card, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material';
 
-import { IProduct } from "@/interfaces";
+import { IProduct } from '@/interfaces';
 
 interface Props {
   product: IProduct;
@@ -10,6 +10,7 @@ interface Props {
 
 export function ProductCard({ product }: Props) {
   const [isHovered, setIsHovered] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const productImage = useMemo(
     () => `products/${product.images[isHovered ? 1 : 0]}`,
@@ -29,17 +30,18 @@ export function ProductCard({ product }: Props) {
           <Link>
             <CardActionArea>
               <CardMedia
-                component={"img"}
+                component={'img'}
                 className="fadeIn"
                 image={productImage}
                 alt={product.title}
+                onLoad={() => setIsImageLoaded(true)}
               />
             </CardActionArea>
           </Link>
         </NextLink>
       </Card>
 
-      <Box sx={{ mt: 1 }} className="fadeIn">
+      <Box sx={{ mt: 1, display: isImageLoaded ? 'block' : 'none' }} className="fadeIn">
         <Typography fontWeight={700}>{product.title}</Typography>
         <Typography fontWeight={500}>${product.price}</Typography>
       </Box>
