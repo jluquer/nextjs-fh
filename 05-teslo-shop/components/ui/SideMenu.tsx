@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+
 import {
   Box,
   Divider,
@@ -11,11 +13,13 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
-} from "@mui/material";
+} from '@mui/material';
 import {
   AccountCircleOutlined,
   AdminPanelSettings,
+  ArrowLeft,
   CategoryOutlined,
+  Close,
   ConfirmationNumberOutlined,
   EscalatorWarningOutlined,
   FemaleOutlined,
@@ -23,16 +27,34 @@ import {
   MaleOutlined,
   SearchOutlined,
   VpnKeyOutlined,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
+
+import { UIContext } from '@/context';
+import { useRouter } from 'next/router';
 
 export function SideMenu() {
+  const { isMenuOpen, toggleSideMenu } = useContext(UIContext);
+  const router = useRouter();
+
+  const navigateTo = (url: string) => {
+    router.push(url);
+    toggleSideMenu();
+  };
+
   return (
     <Drawer
-      open={false}
+      open={isMenuOpen}
       anchor="right"
-      sx={{ backdropFilter: "blur(4px)", transition: "all 0.5s ease-out" }}
+      sx={{ backdropFilter: 'blur(4px)', transition: 'all 0.5s ease-out' }}
+      onClose={toggleSideMenu}
     >
-      <Box sx={{ width: 250, paddingTop: 5 }}>
+      <Box display={'flex'} justifyContent={'start'}>
+        <IconButton onClick={toggleSideMenu} title='Cerrar menu'>
+          <Close />
+        </IconButton>
+      </Box>
+
+      <Box sx={{ width: 250, paddingTop: 1 }}>
         <List>
           <ListItem>
             <Input
@@ -52,49 +74,68 @@ export function SideMenu() {
             <ListItemIcon>
               <AccountCircleOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Perfil"} />
+            <ListItemText primary={'Perfil'} />
           </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Mis Ordenes"} />
+            <ListItemText primary={'Mis Ordenes'} />
           </ListItemButton>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }}>
+          <ListItemButton
+            sx={{ display: { xs: '', sm: 'none' } }}
+            onClick={() => {
+              navigateTo('/category/men');
+            }}
+          >
             <ListItemIcon>
               <MaleOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Hombres"} />
+            <ListItemText primary={'Hombres'} />
           </ListItemButton>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }}>
+          <ListItemButton
+            sx={{ display: { xs: '', sm: 'none' } }}
+            onClick={() => {
+              navigateTo('/category/women');
+            }}
+          >
             <ListItemIcon>
               <FemaleOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Mujeres"} />
+            <ListItemText primary={'Mujeres'} />
           </ListItemButton>
 
-          <ListItemButton sx={{ display: { xs: "", sm: "none" } }}>
+          <ListItemButton
+            sx={{ display: { xs: '', sm: 'none' } }}
+            onClick={() => {
+              navigateTo('/category/kid');
+            }}
+          >
             <ListItemIcon>
               <EscalatorWarningOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Niños"} />
+            <ListItemText primary={'Niños'} />
           </ListItemButton>
 
-          <ListItemButton>
+          <ListItemButton
+            onClick={() => {
+              navigateTo('/auth/login');
+            }}
+          >
             <ListItemIcon>
               <VpnKeyOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Ingresar"} />
+            <ListItemText primary={'Login'} />
           </ListItemButton>
 
           <ListItemButton>
             <ListItemIcon>
               <LoginOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Salir"} />
+            <ListItemText primary={'Salir'} />
           </ListItemButton>
 
           {/* Admin */}
@@ -105,20 +146,20 @@ export function SideMenu() {
             <ListItemIcon>
               <CategoryOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Productos"} />
+            <ListItemText primary={'Productos'} />
           </ListItemButton>
           <ListItem button>
             <ListItemIcon>
               <ConfirmationNumberOutlined />
             </ListItemIcon>
-            <ListItemText primary={"Ordenes"} />
+            <ListItemText primary={'Ordenes'} />
           </ListItem>
 
           <ListItemButton>
             <ListItemIcon>
               <AdminPanelSettings />
             </ListItemIcon>
-            <ListItemText primary={"Usuarios"} />
+            <ListItemText primary={'Usuarios'} />
           </ListItemButton>
         </List>
       </Box>

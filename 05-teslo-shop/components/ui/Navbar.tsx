@@ -1,8 +1,11 @@
+import { useContext } from 'react';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { AppBar, Badge, Box, Button, IconButton, Link, Toolbar, Typography } from '@mui/material';
 import { SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+
+import { UIContext } from '@/context';
 
 const categories = [
   { name: 'Hombres', url: '/category/men' },
@@ -11,6 +14,8 @@ const categories = [
 ];
 export function Navbar() {
   const path = usePathname();
+
+  const { toggleSideMenu } = useContext(UIContext);
 
   return (
     <AppBar>
@@ -49,7 +54,7 @@ export function Navbar() {
           </Link>
         </NextLink>
 
-        <Button>Menu</Button>
+        <Button onClick={toggleSideMenu}>Menu</Button>
       </Toolbar>
     </AppBar>
   );
