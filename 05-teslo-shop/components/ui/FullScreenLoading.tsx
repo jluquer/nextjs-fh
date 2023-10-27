@@ -2,7 +2,7 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { ShopLayout } from '@/components/layouts';
 
-export default function FullScreenLoading() {
+export function FullScreenLoading() {
   return (
     <ShopLayout title="Página no encontrada" pageDescription="No hay nada que mostrar aquí">
       <Box

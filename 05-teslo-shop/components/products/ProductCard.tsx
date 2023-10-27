@@ -13,7 +13,7 @@ export function ProductCard({ product }: Props) {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   const productImage = useMemo(
-    () => `products/${product.images[isHovered ? 1 : 0]}`,
+    () => `/products/${product.images[isHovered ? 1 : 0]}`,
     [isHovered, product.images]
   );
 

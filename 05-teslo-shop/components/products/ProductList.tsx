@@ -5,6 +5,7 @@ import { ProductCard } from ".";
 interface Props {
   products: IProduct[];
 }
+
 export function ProductList({ products }: Props) {
   return (
     <Grid container spacing={4}>
