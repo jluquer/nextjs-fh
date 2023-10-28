@@ -1,13 +1,17 @@
-import { ShopLayout } from "@/components/layouts";
-import { ProductSlideShow } from "@/components/products";
-import SizeSelector from "@/components/products/SizeSelector";
-import { ItemCounter } from "@/components/ui";
-import { initialData } from "@/database/products";
-import { Box, Button, Chip, Grid, Typography } from "@mui/material";
+import { GetServerSideProps } from 'next';
+import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 
-const product = initialData.products[0];
+import { ShopLayout } from '@/components/layouts';
+import { ProductSlideShow, SizeSelector } from '@/components/products';
+import { ItemCounter } from '@/components/ui';
+import { IProduct } from '@/interfaces';
+import { dbProduct } from '@/database';
 
-function ProductPage() {
+interface Props {
+  product: IProduct;
+}
+
+export default function ProductPage({ product }: Props) {
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <Grid container spacing={3}>
@@ -16,11 +20,11 @@ function ProductPage() {
         </Grid>
 
         <Grid item xs={12} sm={5}>
-          <Box display={"flex"} flexDirection={"column"}>
-            <Typography variant="h1" component={"h1"}>
+          <Box display={'flex'} flexDirection={'column'}>
+            <Typography variant="h1" component={'h1'}>
               {product.title}
             </Typography>
-            <Typography variant="subtitle1" component={"h2"}>
+            <Typography variant="subtitle1" component={'h2'}>
               ${product.price}
             </Typography>
 
@@ -49,4 +53,21 @@ function ProductPage() {
   );
 }
 
-export default ProductPage;
+// You should use getServerSideProps when:
+// - Only if you need to pre-render a page whose data must be fetched at request time
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const { slug } = params as { slug: string };
+  const product = await dbProduct.getProductBySlug(slug);
+
+  if (!product)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+
+  return {
+    props: { product },
+  };
+};

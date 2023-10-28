@@ -6,7 +6,7 @@ interface Props {
   selectedSize?: ISize;
 }
 
-export default function SizeSelector({ selectedSize, sizes }: Props) {
+export function SizeSelector({ selectedSize, sizes }: Props) {
   return (
     <Box>
       {sizes.map((size) => (

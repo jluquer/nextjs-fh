@@ -17,7 +17,7 @@ export function CartList({ editable = false }: Props) {
       {productsInCart.map((product) => (
         <Grid key={product.slug} container spacing={2} sx={{ mb: 1 }}>
           <Grid item xs={3}>
-            <NextLink href={'/product/slug'} passHref legacyBehavior>
+            <NextLink href={`/product/${product.slug}`} passHref legacyBehavior>
               <Link>
                 <CardActionArea>
                   <CardMedia
@@ -40,7 +40,7 @@ export function CartList({ editable = false }: Props) {
           </Grid>
           <Grid item xs={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
             <Typography variant="subtitle1">${product.price}</Typography>
-            
+
             {editable && (
               <Button color="secondary" variant="text">
                 Quitar
