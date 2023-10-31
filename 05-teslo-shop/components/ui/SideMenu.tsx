@@ -63,6 +63,7 @@ export function SideMenu() {
         <List>
           <ListItem>
             <Input
+              autoFocus
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && onSearchTerm()}
@@ -70,7 +71,7 @@ export function SideMenu() {
               placeholder="Buscar..."
               endAdornment={
                 <InputAdornment position="end">
-                  <IconButton aria-label="toggle password visibility">
+                  <IconButton onClick={onSearchTerm}>
                     <SearchOutlined />
                   </IconButton>
                 </InputAdornment>

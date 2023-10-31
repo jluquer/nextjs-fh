@@ -24,15 +24,15 @@ export default function SearchPage({ products, foundProducts, query }: Props) {
       </Typography>
 
       {foundProducts ? (
-        <Typography variant="h2" sx={{ mb: 1 }}>
-          Término de búsqueda: {query}
+        <Typography variant="h2" sx={{ mb: 1 }} textTransform="capitalize">
+          Término: {query}
         </Typography>
       ) : (
         <Box display={'flex'} gap={1}>
           <Typography variant="h2" sx={{ mb: 1 }}>
             No encontramos ningún producto
           </Typography>
-          <Typography variant="h2" sx={{ mb: 1 }} color={'secondary'}>
+          <Typography variant="h2" sx={{ mb: 1 }} color={'secondary'} textTransform="capitalize">
             {query}
           </Typography>
         </Box>
