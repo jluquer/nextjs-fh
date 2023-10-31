@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
+import { useRouter } from 'next/router';
 
 import {
   Box,
@@ -17,7 +18,6 @@ import {
 import {
   AccountCircleOutlined,
   AdminPanelSettings,
-  ArrowLeft,
   CategoryOutlined,
   Close,
   ConfirmationNumberOutlined,
@@ -30,11 +30,16 @@ import {
 } from '@mui/icons-material';
 
 import { UIContext } from '@/context';
-import { useRouter } from 'next/router';
 
 export function SideMenu() {
   const { isMenuOpen, toggleSideMenu } = useContext(UIContext);
   const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const onSearchTerm = () => {
+    if (!searchTerm.trim().length) return;
+    navigateTo(`/search/${searchTerm}`);
+  };
 
   const navigateTo = (url: string) => {
     router.push(url);
@@ -49,7 +54,7 @@ export function SideMenu() {
       onClose={toggleSideMenu}
     >
       <Box display={'flex'} justifyContent={'start'}>
-        <IconButton onClick={toggleSideMenu} title='Cerrar menu'>
+        <IconButton onClick={toggleSideMenu} title="Cerrar menu">
           <Close />
         </IconButton>
       </Box>
@@ -58,6 +63,9 @@ export function SideMenu() {
         <List>
           <ListItem>
             <Input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && onSearchTerm()}
               type="text"
               placeholder="Buscar..."
               endAdornment={
