@@ -28,6 +28,20 @@ export default function ProductPage({ product }: Props) {
     setTempCartProduct((currentProduct) => ({ ...currentProduct, size }));
   };
 
+  const onUpdatedQty = (quantity: number) => {
+    setTempCartProduct((currentProduct) => ({ ...currentProduct, quantity }));
+  };
+
+  const onAddProduct = () => {
+    setTempCartProduct((currentProduct) => {
+      const quantity = currentProduct.quantity + 1;
+      return {
+        ...currentProduct,
+        quantity,
+      };
+    });
+  };
+
   return (
     <ShopLayout title={product.title} pageDescription={product.description}>
       <Grid container spacing={3}>
@@ -46,7 +60,11 @@ export default function ProductPage({ product }: Props) {
 
             <Box sx={{ my: 2 }}>
               <Typography variant="subtitle2">Cantidad</Typography>
-              <ItemCounter />
+              <ItemCounter
+                value={tempCartProduct.quantity}
+                onUpdatedQty={onUpdatedQty}
+                maxValue={product.inStock > 10 ? 10 : product.inStock}
+              />
               <SizeSelector
                 sizes={product.sizes}
                 selectedSize={tempCartProduct.size}
@@ -55,7 +73,7 @@ export default function ProductPage({ product }: Props) {
             </Box>
 
             {product.inStock > 0 ? (
-              <Button color="secondary" className="circular-btn">
+              <Button color="secondary" className="circular-btn" onClick={onAddProduct}>
                 {tempCartProduct.size ? 'Agregar al carrito' : 'Seleccione una talla'}
               </Button>
             ) : (
