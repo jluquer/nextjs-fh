@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
-import { UIContext } from '@/context';
+import { CartContext, UIContext } from '@/context';
 
 const categories = [
   { name: 'Hombres', url: '/category/men' },
@@ -25,6 +25,7 @@ const categories = [
 ];
 export function Navbar() {
   const path = usePathname();
+  const { numberOfItems } = useContext(CartContext);
   const { toggleSideMenu } = useContext(UIContext);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
@@ -98,7 +99,7 @@ export function Navbar() {
         <NextLink href={'/cart'} passHref legacyBehavior={true}>
           <Link>
             <IconButton>
-              <Badge badgeContent={2} color="secondary">
+              <Badge badgeContent={numberOfItems > 9 ? '+9' : numberOfItems} color="secondary">
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>

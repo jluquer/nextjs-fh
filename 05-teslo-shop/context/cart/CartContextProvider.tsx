@@ -6,6 +6,10 @@ import { ICartProduct } from '@/interfaces';
 
 interface ContextProps {
   cart: ICartProduct[];
+  numberOfItems: number;
+  subtotal: number;
+  tax: number;
+  total: number;
   addProductToCart: (product: ICartProduct) => void;
   updateCartQuantity: (product: ICartProduct) => void;
   removeCartProduct: (product: ICartProduct) => void;
@@ -15,10 +19,18 @@ export const CartContext = createContext({} as ContextProps);
 
 export interface CartState {
   cart: ICartProduct[];
+  numberOfItems: number;
+  subtotal: number;
+  tax: number;
+  total: number;
 }
 
 const CART_INITIAL_STATE: CartState = {
   cart: [],
+  numberOfItems: 0,
+  subtotal: 0,
+  tax: 0,
+  total: 0,
 };
 
 interface Props {
@@ -43,6 +55,22 @@ export const CartProvider: FC<Props> = ({ children }) => {
 
   useEffect(() => {
     if (isMounted) Cookies.set('cart', JSON.stringify(state.cart), { sameSite: 'strict' });
+  }, [state.cart, isMounted]);
+
+  useEffect(() => {
+    const numberOfItems = state.cart.reduce((prev, current) => prev + current.quantity, 0);
+    const subtotal = state.cart.reduce(
+      (prev, current) => prev + (current.price + current.quantity),
+      0
+    );
+    const taxRate = +(process.env.NEXT_PUBLIC_TAX_RATE ?? 0);
+    const orderSummary = {
+      numberOfItems,
+      subtotal,
+      tax: subtotal * taxRate,
+      total: subtotal * (1 + taxRate),
+    };
+    dispatch({ type: '[Cart] - Update order summary', payload: orderSummary });
   }, [state.cart, isMounted]);
 
   const contextProviderValue = useMemo((): ContextProps => {
