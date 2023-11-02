@@ -1,27 +1,31 @@
+import { useContext } from 'react';
 import NextLink from 'next/link';
 
 import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material';
 
-import { initialData } from '@/database/products';
 import { ItemCounter } from '../ui';
-
-const productsInCart = [initialData.products[0], initialData.products[1], initialData.products[2]];
+import { CartContext } from '@/context';
+import { ICartProduct } from '@/interfaces';
 
 interface Props {
   editable?: boolean;
 }
 
 export function CartList({ editable = false }: Props) {
+  const { cart } = useContext(CartContext);
+  const updateQty = (product: ICartProduct, qty: number) => {
+    console.log({ product, qty });
+  };
   return (
     <>
-      {productsInCart.map((product) => (
+      {cart.map((product) => (
         <Grid key={product.slug} container spacing={2} sx={{ mb: 1 }}>
           <Grid item xs={3}>
             <NextLink href={`/product/${product.slug}`} passHref legacyBehavior>
               <Link>
                 <CardActionArea>
                   <CardMedia
-                    image={`/products/${product.images[0]}`}
+                    image={`/products/${product.image}`}
                     component={'img'}
                     sx={{ borderRadius: '5px' }}
                   />
@@ -33,9 +37,17 @@ export function CartList({ editable = false }: Props) {
             <Box display={'flex'} flexDirection={'column'}>
               <Typography variant="body1">{product.title}</Typography>
               <Typography variant="body1">
-                Talla <strong>M</strong>
+                Talla <strong>{product.size}</strong>
               </Typography>
-              {editable ? <ItemCounter /> : <Typography variant="h5">3 items</Typography>}
+              {editable ? (
+                <ItemCounter
+                  value={product.quantity}
+                  maxValue={5}
+                  onUpdatedQty={(qty) => updateQty(product, qty)}
+                />
+              ) : (
+                <Typography variant="h5">3 items</Typography>
+              )}
             </Box>
           </Grid>
           <Grid item xs={2} display={'flex'} alignItems={'center'} flexDirection={'column'}>
