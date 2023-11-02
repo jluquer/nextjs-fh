@@ -8,6 +8,7 @@ interface ContextProps {
   cart: ICartProduct[];
   addProductToCart: (product: ICartProduct) => void;
   updateCartQuantity: (product: ICartProduct) => void;
+  removeCartProduct: (product: ICartProduct) => void;
 }
 
 export const CartContext = createContext({} as ContextProps);
@@ -44,7 +45,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
     if (isMounted) Cookies.set('cart', JSON.stringify(state.cart), { sameSite: 'strict' });
   }, [state.cart, isMounted]);
 
-  const contextProviderValue: ContextProps = useMemo(() => {
+  const contextProviderValue = useMemo((): ContextProps => {
     const addProductToCart = (newProduct: ICartProduct) => {
       const type = '[Cart] - Update products in cart';
       const isSameProduct = (p: ICartProduct) =>
@@ -65,7 +66,14 @@ export const CartProvider: FC<Props> = ({ children }) => {
       dispatch({ type: '[Cart] - Update quantity', payload: product });
     };
 
-    return { ...state, addProductToCart, updateCartQuantity };
+    const removeCartProduct = (productToDelete: ICartProduct) => {
+      const payload = state.cart.filter(
+        (product) => !(product._id === productToDelete._id && product.size === productToDelete.size)
+      );
+      dispatch({ type: '[Cart] - Update products in cart', payload });
+    };
+
+    return { ...state, addProductToCart, updateCartQuantity, removeCartProduct };
   }, [state]);
 
   return <CartContext.Provider value={contextProviderValue}>{children}</CartContext.Provider>;
