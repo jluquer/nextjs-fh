@@ -1,4 +1,4 @@
-import { FC, ReactNode, useReducer, createContext, useEffect, useState } from 'react';
+import { FC, ReactNode, useReducer, createContext, useEffect, useState, useMemo } from 'react';
 import Cookies from 'js-cookie';
 
 import { cartReducer } from '.';
@@ -7,6 +7,7 @@ import { ICartProduct } from '@/interfaces';
 interface ContextProps {
   cart: ICartProduct[];
   addProductToCart: (product: ICartProduct) => void;
+  updateCartQuantity: (product: ICartProduct) => void;
 }
 
 export const CartContext = createContext({} as ContextProps);
@@ -34,7 +35,7 @@ export const CartProvider: FC<Props> = ({ children }) => {
       const products = Cookies.get('cart');
       const cart = products ? JSON.parse(products) : [];
       dispatch({ type: '[Cart] - LoadCard from cookies | storage', payload: cart });
-    } catch(e) {
+    } catch (e) {
       dispatch({ type: '[Cart] - LoadCard from cookies | storage', payload: [] });
     }
   }, [isMounted]);
@@ -43,23 +44,29 @@ export const CartProvider: FC<Props> = ({ children }) => {
     if (isMounted) Cookies.set('cart', JSON.stringify(state.cart), { sameSite: 'strict' });
   }, [state.cart, isMounted]);
 
-  const addProductToCart = (newProduct: ICartProduct) => {
-    const type = '[Cart] - Update products in cart';
-    const isSameProduct = (p: ICartProduct) =>
-      p._id === newProduct._id && p.size === newProduct.size;
-    const productInCart = state.cart.some(isSameProduct);
+  const contextProviderValue: ContextProps = useMemo(() => {
+    const addProductToCart = (newProduct: ICartProduct) => {
+      const type = '[Cart] - Update products in cart';
+      const isSameProduct = (p: ICartProduct) =>
+        p._id === newProduct._id && p.size === newProduct.size;
+      const productInCart = state.cart.some(isSameProduct);
 
-    if (!productInCart) return dispatch({ type, payload: [...state.cart, newProduct] });
+      if (!productInCart) return dispatch({ type, payload: [...state.cart, newProduct] });
 
-    const updatedProducts = state.cart.map((product) => {
-      if (isSameProduct(product)) product.quantity++;
-      return product;
-    });
+      const updatedProducts = state.cart.map((product) => {
+        if (isSameProduct(product)) product.quantity++;
+        return product;
+      });
 
-    dispatch({ type, payload: updatedProducts });
-  };
+      dispatch({ type, payload: updatedProducts });
+    };
 
-  return (
-    <CartContext.Provider value={{ ...state, addProductToCart }}>{children}</CartContext.Provider>
-  );
+    const updateCartQuantity = (product: ICartProduct) => {
+      dispatch({ type: '[Cart] - Update quantity', payload: product });
+    };
+
+    return { ...state, addProductToCart, updateCartQuantity };
+  }, [state]);
+
+  return <CartContext.Provider value={contextProviderValue}>{children}</CartContext.Provider>;
 };

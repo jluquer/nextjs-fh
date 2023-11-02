@@ -12,14 +12,17 @@ interface Props {
 }
 
 export function CartList({ editable = false }: Props) {
-  const { cart } = useContext(CartContext);
-  const updateQty = (product: ICartProduct, qty: number) => {
-    console.log({ product, qty });
+  const { cart, updateCartQuantity } = useContext(CartContext);
+
+  const updateQty = (product: ICartProduct, newQty: number) => {
+    product.quantity = newQty;
+    updateCartQuantity(product);
   };
+
   return (
     <>
       {cart.map((product) => (
-        <Grid key={product.slug} container spacing={2} sx={{ mb: 1 }}>
+        <Grid key={product._id + product.size} container spacing={2} sx={{ mb: 1 }}>
           <Grid item xs={3}>
             <NextLink href={`/product/${product.slug}`} passHref legacyBehavior>
               <Link>
@@ -42,11 +45,13 @@ export function CartList({ editable = false }: Props) {
               {editable ? (
                 <ItemCounter
                   value={product.quantity}
-                  maxValue={5}
+                  maxValue={10} // TODO: consultar backend
                   onUpdatedQty={(qty) => updateQty(product, qty)}
                 />
               ) : (
-                <Typography variant="h5">3 items</Typography>
+                <Typography variant="h5">
+                  {product.quantity} producto{product.quantity > 1 && 's'}
+                </Typography>
               )}
             </Box>
           </Grid>
