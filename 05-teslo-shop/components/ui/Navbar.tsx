@@ -14,7 +14,11 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+  ClearOutlined,
+  SearchOutlined,
+  ShoppingCartOutlined,
+} from '@mui/icons-material';
 
 import { CartContext, UIContext } from '@/context';
 
@@ -41,7 +45,7 @@ export function Navbar() {
       <Toolbar>
         <NextLink href={'/'} passHref legacyBehavior={true}>
           <Link display={'flex'} alignItems={'center'}>
-            <Typography variant="h6">Teslo |</Typography>
+            <Typography variant='h6'>Teslo |</Typography>
             <Typography sx={{ ml: 0.5 }}>Shop</Typography>
           </Link>
         </NextLink>
@@ -49,13 +53,22 @@ export function Navbar() {
         <Box flex={1}></Box>
 
         <Box
-          className="fadeIn"
-          sx={{ display: isSearchVisible ? 'none' : { xs: 'none', sm: 'block' } }}
+          className='fadeIn'
+          sx={{
+            display: isSearchVisible ? 'none' : { xs: 'none', sm: 'block' },
+          }}
         >
           {categories.map((category) => (
-            <NextLink key={category.url} href={category.url} passHref legacyBehavior={true}>
+            <NextLink
+              key={category.url}
+              href={category.url}
+              passHref
+              legacyBehavior={true}
+            >
               <Link>
-                <Button color={path === category.url ? 'primary' : 'info'}>{category.name}</Button>
+                <Button color={path === category.url ? 'primary' : 'info'}>
+                  {category.name}
+                </Button>
               </Link>
             </NextLink>
           ))}
@@ -71,10 +84,10 @@ export function Navbar() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && onSearchTerm()}
-            type="text"
-            placeholder="Buscar..."
+            type='text'
+            placeholder='Buscar...'
             endAdornment={
-              <InputAdornment position="end">
+              <InputAdornment position='end'>
                 <IconButton onClick={() => setIsSearchVisible(false)}>
                   <ClearOutlined />
                 </IconButton>
@@ -85,21 +98,27 @@ export function Navbar() {
           <IconButton
             sx={{ display: { xs: 'none', sm: 'flex' } }}
             onClick={() => setIsSearchVisible(true)}
-            className="fadeIn"
+            className='fadeIn'
           >
             <SearchOutlined />
           </IconButton>
         )}
 
         {/* Pantallas pequeñas */}
-        <IconButton sx={{ display: { xs: 'flex', sm: 'none' } }} onClick={toggleSideMenu}>
+        <IconButton
+          sx={{ display: { xs: 'flex', sm: 'none' } }}
+          onClick={toggleSideMenu}
+        >
           <SearchOutlined />
         </IconButton>
 
         <NextLink href={'/cart'} passHref legacyBehavior={true}>
           <Link>
             <IconButton>
-              <Badge badgeContent={numberOfItems > 9 ? '+9' : numberOfItems} color="secondary">
+              <Badge
+                badgeContent={numberOfItems > 9 ? '+9' : numberOfItems}
+                color='secondary'
+              >
                 <ShoppingCartOutlined />
               </Badge>
             </IconButton>
