@@ -1,7 +1,9 @@
 import Image from 'next/image';
-import { SimplePokemon } from '..';
 import Link from 'next/link';
+
 import { IoHeartOutline } from 'react-icons/io5';
+
+import { SimplePokemon } from '..';
 
 interface Props {
   pokemon: SimplePokemon;
@@ -20,6 +22,7 @@ export function PokemonCard({ pokemon }: Props) {
               width={100}
               height={100}
               alt={name}
+              priority={false}
             />
           </div>
           <p className='pt-2 text-lg font-semibold text-gray-50 capitalize'>{pokemon.name}</p>
