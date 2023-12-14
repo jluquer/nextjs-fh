@@ -7,34 +7,38 @@ interface Props {
   params: { id: string };
 }
 
-async function getPokemon(id: string): Promise<Pokemon> {
-  try {
-    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
-      cache: 'force-cache', // TODO: cambiar esto en un futuro
-    }).then((resp) => resp.json());
-
-    return pokemon;
-  } catch (error) {
-    notFound();
-  }
+export async function generateStaticParams() {
+  const pokemonIds = Array.from({ length: 151 }).map((_, i) => `${i + 1}`);
+  return pokemonIds.map((id) => ({ id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    console.log(params.id);
     const { id, name } = await getPokemon(params.id);
 
-    console.log(id, name);
     return {
       title: `#${id} - ${name}`,
       description: `Página del pokémon ${name}`,
     };
   } catch (error) {
-    console.log(error, 'err');
     return {
       title: 'Página del pokémon',
       description: 'Culpa cupidatat ipsum magna reprehenderit ex tempor.',
     };
+  }
+}
+
+async function getPokemon(id: string): Promise<Pokemon> {
+  try {
+    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+      next: {
+        revalidate: 60 * 60 * 30 * 6,
+      },
+    }).then((resp) => resp.json());
+
+    return pokemon;
+  } catch (error) {
+    notFound();
   }
 }
 
