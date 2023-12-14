@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { IoBrowsersOutline, IoCalculator, IoCartOutline, IoLogoReact } from 'react-icons/io5';
+import { IoBrowsersOutline, IoCalculator, IoCartOutline, IoHeartOutline, IoLogoReact } from 'react-icons/io5';
 import { SidebarMenuItem } from '.';
 
 const menuItems = [
@@ -20,6 +20,12 @@ const menuItems = [
     icon: <IoCalculator size={30} />,
     title: 'Pokemons',
     subtitle: 'Generación estática',
+  },
+  {
+    path: '/dashboard/favorites',
+    icon: <IoHeartOutline size={30} />,
+    title: 'Favoritos',
+    subtitle: 'Global State',
   },
 ];
 
