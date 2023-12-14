@@ -4,7 +4,9 @@ import { useAppSelector } from '@/store';
 import { IoHeartDislikeOutline } from 'react-icons/io5';
 
 export function FavoritePokemons() {
-  const favorites = useAppSelector((state) => Object.values(state.pokemons));
+  const favorites = useAppSelector((state) =>
+    Object.values(state.pokemons.favorites),
+  );
 
   return favorites.length ? (
     <PokemonGrid pokemons={favorites} />
