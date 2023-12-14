@@ -33,4 +33,4 @@ const counterSlice = createSlice({
 
 export const { addOne, subtractOne, resetCount, initCounterState } = counterSlice.actions;
 
-export const counterReducer = counterSlice.reducer;
+export default counterSlice.reducer;
