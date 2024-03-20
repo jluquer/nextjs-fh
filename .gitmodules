@@ -1,0 +1,3 @@
+[submodule "teslo-shop"]
+	path = teslo-shop
+	url = git@github.com:jluquer/teslo-shop.git
